@@ -40,3 +40,8 @@ if SUPERDESK_TESTING:
     CELERY_ALWAYS_EAGER = True
     ELASTICSEARCH_BACKUPS_PATH = '/var/tmp/elasticsearch'
     LEGAL_ARCHIVE = True
+
+# for client
+host, ssl = env('HOST'), env('HOST_SSL') and 's' or ''
+SUPERDESK_URL = f('http{ssl}://{host}/api')
+SUPERDESK_WS_URL = f('ws{ssl}://{host}/ws')

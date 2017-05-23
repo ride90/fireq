@@ -1,5 +1,4 @@
-cd {{repo_server}}
-_activate
+{{>dev.sh}}
 
 feature=(./features/*.feature)
 [ -f $feature ] || exit 0

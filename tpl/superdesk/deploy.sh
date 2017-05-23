@@ -1,29 +1,18 @@
 ### deploy
-# write config if not exist
-config={{config}}
-[ -f $config ] || cat <<EOF > $config
-{{>deploy-config.sh}}
+cd {{repo}}
+cat <<"EOF" > activate
+{{>activate.sh}}
 EOF
 
-# env.sh
-envfile={{repo}}/env.sh
-cat <<"EOF" > $envfile
-{{>deploy-env.sh}}
+[ -f {{config}} ] || cat <<EOF > {{config}}
+{{>config.sh}}
 EOF
 
-# load env.sh and config in activation script
-activate={{repo_env}}/bin/activate
-grep "$envfile" $activate || cat <<EOF >> $activate
-set -a
-[ -f $config ] && . $config
-. $envfile
-set +a
+cat <<"EOF" > {{repo_server}}/settings.py
+{{>settings.py}}
 EOF
-unset envfile activate config
+
 _activate
-
-
-{{>add-nginx.sh}}
 
 
 [ -z "${prepopulate-1}" ] || (
@@ -36,8 +25,7 @@ systemctl disable rsyslog
 systemctl stop rsyslog
 
 # Use latest honcho with --no-colour option
-_activate
-pip install -U honcho
+pip install -U honcho gunicorn
 
 gunicorn_opts='-t 300 -w 2 --access-logfile=- --access-logformat="%(m)s %(U)s status=%(s)s time=%(T)ss size=%(B)sb"{{#dev}} --reload{{/dev}}'
 cat <<EOF > {{repo}}/server/Procfile
@@ -71,6 +59,14 @@ systemctl restart $service
 unset service
 
 
+{{>add-nginx.sh}}
+
+
 [ -z "${smtp-1}" ] || (
 {{>add-smtp.sh}}
 )
+{{#dev}}
+
+
+{{>dev.sh}}
+{{/dev}}

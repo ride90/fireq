@@ -7,9 +7,13 @@ export DEBIAN_FRONTEND=noninteractive
 export DBUS_SESSION_BUS_ADDRESS=/dev/null
 
 _activate() {
-    set +ux
-    . {{repo_env}}/bin/activate
-    set -ux
+    set +ux -a
+    . {{repo}}/activate
+    set -ux +a
+}
+
+_missing_db() {
+    curl -sI http://$DB_HOST:9200/$DB_NAME | grep -q 404
 }
 
 _missing_db() {

@@ -156,7 +156,7 @@ def endpoint(tpl, scope=None, *, tpldir=None, expand=None, header=True):
         is_pr = re.match('^pull/\d*$', repo_ref)
         is_superdesk = name == 'superdesk'
         logs = '/var/log/%s' % name
-        config = '/etc/%s.sh' % name
+        config = '%s/.env' % repo_server
         return locals()
 
     expand = expand or {}

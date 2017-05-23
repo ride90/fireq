@@ -19,21 +19,17 @@ libxml2-dev libxslt1-dev
 env={{repo_env}}
 [ -d $env ] && rm -rf $env
 python3 -m venv $env
-echo 'export PATH=./node_modules/.bin/:$PATH' >> $env/bin/activate
 unset env
+
+cat <<"EOF" > {{repo}}/activate
+{{>activate.sh}}
+EOF
 
 _activate
 pip install -U pip wheel
 
 cd {{repo_server}}
 time pip install -U -r requirements.txt
-{{#dev}}
-[ ! -f dev-requirements.txt ] || time pip install -r dev-requirements.txt
-
-cat <<EOF > /etc/profile.d/env.sh
-. {{repo_env}}/bin/activate
-EOF
-{{/dev}}
 
 
 ## client part
@@ -49,8 +45,4 @@ if [ -f bower.json ]; then
 fi
 {{/is_superdesk}}
 
-# use default urls here
-time \
-SUPERDESK_URL=http://localhost/api \
-SUPERDESK_WS_URL=ws://localhost/ws \
 grunt build --webpack-no-progress

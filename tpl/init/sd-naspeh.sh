@@ -15,9 +15,7 @@ location /api/upload-raw/ {
 }
 EOF
 
-set +x
-. {{config}}
-set -x
+_activate
 
 cat <<EOF > {{repo_client}}/dist/config.*.js
 window.superdeskConfig = {
