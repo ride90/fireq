@@ -5,5 +5,5 @@
 {{>build-src-cores.sh}}
 
 cd {{repo}}/client-core
-time npm link
+time yarn link
 {{/develop}}

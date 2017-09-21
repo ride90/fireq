@@ -69,8 +69,9 @@ cat <<EOF > /etc/profile.d/activate.sh
 EOF
 
 # cleanup
+yarn cache clean
 rm -rf {{repo}}
-rm /etc/systemd/system/{{name}}* || true
+rm -rf /etc/systemd/system/{{name}}* || true
 systemctl disable nginx elasticsearch mongod
 
 # cleanup apt-get
