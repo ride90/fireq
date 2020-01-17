@@ -9,7 +9,7 @@ fi
 curl -s https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 
 apt-get update
-apt-get install -y --no-install-recommends google-chrome-stable
+apt-get install -y --no-install-recommends --allow-unauthenticated google-chrome-stable
 google-chrome --version
 
 chrome_opts=${chrome_opts:-""}
